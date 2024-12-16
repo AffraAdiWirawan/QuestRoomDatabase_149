@@ -71,3 +71,13 @@ data class DetailMhsUiState(
     val isUiEventNotEmpty: Boolean
         get() = detailUiEvent != MahasiswaEvent()
 }
+fun Mahasiswa.toDetailUiEvent(): MahasiswaEvent {
+    return MahasiswaEvent(
+        nim = nim,
+        nama = nama,
+        jenisKelamin = jenisKelamin,
+        alamat = alamat,
+        kelas = kelas,
+        angkatan = angkatan
+    )
+}
