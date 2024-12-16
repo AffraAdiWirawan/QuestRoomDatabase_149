@@ -62,4 +62,9 @@ class MahasiswaViewModel(
         }
     }
     //reset pesan snackbar setelah ditampilkan
-    
+    fun resetSnackBarMessage() {
+        uiState = uiState.copy(
+            snackBarMessage = null
+        )
+    }
+}
