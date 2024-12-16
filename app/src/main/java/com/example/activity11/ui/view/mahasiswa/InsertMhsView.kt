@@ -191,3 +191,52 @@ object DestinasiInsert: AlamatNavigasi {
     override val route : String = "insert_mhs"
 }
 
+@Composable
+fun InsertMhsView(
+    onBack: () -> Unit,
+    onNavigate: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: MahasiswaViewModel = viewModel(factory = PenyediaViewModel.Factory)
+){
+    val uiState = viewModel.uiState
+    val snackBarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(uiState.snackBarMessage) {
+        uiState.snackBarMessage?.let { message ->
+            coroutineScope.launch {
+                snackBarHostState.showSnackbar(message)
+                viewModel.resetSnackBarMessage()
+            }
+        }
+    }
+    Scaffold (
+        modifier = modifier,
+        snackbarHost = {SnackbarHost(hostState = snackBarHostState)}
+
+    ){padding ->
+        Column (
+            modifier = modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp)
+        ){
+            TopAppBar(
+                onBack = onBack,
+                showBackButton = true,
+                judul = "Tambah Mahasiswa"
+            )
+            InsertBodyMhs(
+                uiState = uiState,
+                onValueChange = {updatedEvent ->
+                    viewModel.updateState(updatedEvent)
+                },onClick = {
+                    coroutineScope.launch {
+                        viewModel.saveData()
+                    }
+                    onNavigate()
+                }
+            )
+        }
+    }
+}
