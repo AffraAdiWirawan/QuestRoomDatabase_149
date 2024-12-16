@@ -36,4 +36,30 @@ class MahasiswaViewModel(
         return errorState.isValid()
     }
 
-   
+    fun saveData() {
+
+        val currentEvent = uiState.mahasiswaEvent
+
+        if (validateFields()) {
+            viewModelScope.launch {
+                try {
+                    repositoryMhs.insertMhs(currentEvent.toMahasiswaEntity())
+                    uiState = uiState.copy(
+                        snackBarMessage = "Data berhasil disimpan",
+                        mahasiswaEvent = MahasiswaEvent(),
+                        isEntryValid = FormErrorState()
+                    )
+                } catch (e: Exception) {
+                    uiState = uiState.copy(
+                        snackBarMessage = "Data gagal disimpan"
+                    )
+                }
+            }
+        }else {
+            uiState = uiState.copy(
+                snackBarMessage = "Data tidak valid. Periksa kembali data Anda."
+            )
+        }
+    }
+    //reset pesan snackbar setelah ditampilkan
+    
