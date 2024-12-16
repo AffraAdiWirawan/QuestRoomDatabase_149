@@ -16,5 +16,10 @@ class MahasiswaViewModel(
 
     var uiState by mutableStateOf(MhsUIState())
 
+    fun updateState(mahasiswaEvent: MahasiswaEvent){
+        uiState = uiState.copy(
+            mahasiswaEvent = mahasiswaEvent,
+        )
+
+    }
     
-}
